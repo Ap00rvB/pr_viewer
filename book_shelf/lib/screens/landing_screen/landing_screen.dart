@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../common/circular_progress_indicator.dart';
 import '../category/book_card_screen/book_card_train.dart';
-import '../search_loading.dart';
+import '../search_filter_screen/search_filter_screen.dart';
 import 'landing_screen_vm.dart';
 
 class LandingScreen extends StatefulWidget {
@@ -98,7 +98,7 @@ class _LandingScreenState extends State<LandingScreen> {
                     onPressed: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return searchloading(text: _textEditingController.text);
+                        return SearchFilterScreen(text: _textEditingController.text);
                       }));
                     },
                     style: ElevatedButton.styleFrom(

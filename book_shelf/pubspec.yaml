@@ -44,6 +44,7 @@ dependencies:
   provider: ^6.0.2
   file: ^7.0.0
   flutter_animate: ^4.3.0
+  flutter_svg: ^2.0.5
 
 dev_dependencies:
   flutter_test:

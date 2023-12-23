@@ -17,35 +17,6 @@ class BookdisplayScreen extends StatelessWidget {
 
   BookdisplayScreen({super.key, @required this.d});
 
-  Future openfile(var url, var title) async {
-    final file = await downloadfile(url, title!);
-    if (file == null) {
-      print("null");
-      return;
-    }
-    print(file.path);
-    OpenFile.open(file.path);
-  }
-
-  Future<i.File?> downloadfile(var url, var filename) async {
-    try {
-      var appstorage = await getApplicationDocumentsDirectory();
-      final file = i.File('${appstorage.path}/filename');
-      final Response = await Dio().get(url,
-          options: Options(
-            responseType: ResponseType.bytes,
-            followRedirects: false,
-            receiveTimeout: 0,
-          ));
-      final raf = file.openSync(mode: i.FileMode.write);
-      raf.writeFromSync(Response.data);
-      await raf.close();
-
-      return file;
-    } catch (e) {
-      return null;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -272,7 +243,7 @@ class BookdisplayScreen extends StatelessWidget {
                                             ["epub"]["isAvailable"];
                                             if (check == true && vm.downloadUrl.isNotEmpty) {
                                               log('download url - ${vm.downloadUrl}');
-                                              await launchUrl(Uri.parse(vm.downloadUrl));
+                                              await openfile(Uri.parse(vm.downloadUrl));
                                             }
                                           } catch (e) {
                                             print("Not available");
@@ -343,4 +314,35 @@ class BookdisplayScreen extends StatelessWidget {
       },
     );
   }
+
+  Future openfile(var url) async {
+    final file = await downloadfile(url);
+    if (file == null) {
+      print("null");
+      return;
+    }
+    print(file.path);
+    OpenFile.open(file.path);
+  }
+
+  Future<i.File?> downloadfile(var url) async {
+    try {
+      var appstorage = await getApplicationDocumentsDirectory();
+      final file = i.File('${appstorage.path}/filename');
+      final Response = await Dio().get(url,
+          options: Options(
+            responseType: ResponseType.bytes,
+            followRedirects: false,
+            receiveTimeout: 0,
+          ));
+      final raf = file.openSync(mode: i.FileMode.write);
+      raf.writeFromSync(Response.data);
+      await raf.close();
+
+      return file;
+    } catch (e) {
+      return null;
+    }
+  }
+
 }
